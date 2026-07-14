@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+
+# Third-party datasets and environments are obtained from their original sources.
+datasets/heartsteps_v1/
+datasets/hptn067/
+StepCountJITAI/
+
+# Fresh experiment outputs
+data/results/benchmark_new.json
+data/realism/heartsteps_run.json
+data/realism/*_new.json
+data/corpora/llmworld_corpus_new.json
+data/online_q/online_qtables_new.json
+data/results/reference_ladder_new.json
+data/results/benchmark_sigma_sweep_new.json

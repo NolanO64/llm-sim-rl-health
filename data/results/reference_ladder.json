@@ -1,0 +1,17 @@
+{
+  "paper": {
+    "floor": 22,
+    "random": 575,
+    "heuristic": 781,
+    "offline_q": [667, 273],
+    "offline_q_median": 776,
+    "offline_q_collapsed_fits": 1,
+    "offline_q_n_fits": 9,
+    "online_q": [1013, 70],
+    "observable_ceiling": 1080,
+    "observable_per_seed": [1002, 1027, 1067, 1080, 917, 939],
+    "full_state_oracle": 3235,
+    "oracle_per_seed": [2900, 3235, 2905],
+    "online_fraction_of_observable": 0.938
+  }
+}

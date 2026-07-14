@@ -1,0 +1,15 @@
+{
+  "heartsteps_discrete_relative5": {
+    "experiment": 470,
+    "n_predictions": 4831,
+    "class_accuracy": 0.06975781411716,
+    "ordinal_mae": 1.5845580625129372
+  },
+  "heartsteps_discrete_relative3": {
+    "experiment": 475,
+    "n_predictions": 660,
+    "class_accuracy": 0.3106060606060606,
+    "ordinal_mae": 0.7681818181818182
+  },
+  "note": "Observed outcomes were converted to the same patient-local bins using anchor-only history."
+}

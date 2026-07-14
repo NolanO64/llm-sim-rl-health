@@ -1,0 +1,145 @@
+{
+  "type": "object",
+  "properties": {
+    "adherence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Normalized behavioral outcome (0.0 = none, 1.0 = maximum response)."
+    },
+    "adherence_certainty": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Model confidence in the adherence prediction."
+    },
+    "reason_code": {
+      "type": "string",
+      "enum": [
+        "routine",
+        "intervention_response",
+        "side_effects",
+        "low_motivation",
+        "fatigue",
+        "no_change",
+        "context_favorable",
+        "suggestion_response",
+        "baseline_activity",
+        "context_unfavorable",
+        "in_transit",
+        "sedentary_setting",
+        "weather_barrier",
+        "low_engagement",
+        "time_slot_effect",
+        "habit_walk",
+        "routine_dosing",
+        "regimen_confusion",
+        "anticipated_exposure",
+        "no_perceived_risk",
+        "travel_disruption",
+        "pill_fatigue",
+        "stigma_concern",
+        "ran_out",
+        "study_engagement",
+        "declining_motivation",
+        "partner_disclosure_issue",
+        "support_boost",
+        "responded_to_suggestion",
+        "context_match",
+        "context_mismatch",
+        "habituated",
+        "disengaged",
+        "no_suggestion_sent",
+        "spontaneous_activity"
+      ],
+      "description": "Short label for the main driver of the predicted outcome."
+    },
+    "state_update": {
+      "type": "object",
+      "properties": {
+        "stress_level": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": ["low", "moderate", "high"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "routine_disrupted": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "motivation": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "side_effects": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": ["none", "mild", "moderate", "severe"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "social_support_change": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "life_event": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": true
+    },
+    "activity_bin": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["much_lower", "lower", "typical", "higher", "much_higher", "inactive", "active", "near_zero", "positive"]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Optional discrete HeartSteps activity class relative to this participant's visible recent baseline."
+    }
+  },
+  "required": ["adherence", "adherence_certainty", "reason_code", "state_update"],
+  "additionalProperties": false
+}

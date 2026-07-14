@@ -1,0 +1,570 @@
+{
+  "prompt": "canonical",
+  "NB": 3,
+  "MB": 40,
+  "n_candidates": 49,
+  "spearman_pooled": 0.661,
+  "spearman_ci": [
+    0.45,
+    0.81
+  ],
+  "spearman_per_batch": [
+    0.561,
+    0.579,
+    0.638
+  ],
+  "spearman_per_batch_mean": 0.593,
+  "spearman_per_batch_sd": 0.033,
+  "rows": [
+    {
+      "policy": "none",
+      "real_new": 22.0,
+      "llm_mean": 1.684,
+      "llm_sd": 0.25,
+      "batch_means": [
+        2.006,
+        1.647,
+        1.398
+      ]
+    },
+    {
+      "policy": "random",
+      "real_new": 575.0,
+      "llm_mean": 2.474,
+      "llm_sd": 0.106,
+      "batch_means": [
+        2.544,
+        2.555,
+        2.324
+      ]
+    },
+    {
+      "policy": "random-msg",
+      "real_new": 496,
+      "llm_mean": 2.669,
+      "llm_sd": 0.118,
+      "batch_means": [
+        2.545,
+        2.635,
+        2.828
+      ]
+    },
+    {
+      "policy": "heuristic",
+      "real_new": 781.0,
+      "llm_mean": 2.854,
+      "llm_sd": 0.458,
+      "batch_means": [
+        2.672,
+        3.483,
+        2.406
+      ]
+    },
+    {
+      "policy": "always-generic",
+      "real_new": 471.0,
+      "llm_mean": 1.34,
+      "llm_sd": 0.185,
+      "batch_means": [
+        1.577,
+        1.317,
+        1.125
+      ]
+    },
+    {
+      "policy": "always-matchA",
+      "real_new": 591.0,
+      "llm_mean": 2.0,
+      "llm_sd": 0.346,
+      "batch_means": [
+        1.821,
+        2.484,
+        1.695
+      ]
+    },
+    {
+      "policy": "always-matchB",
+      "real_new": 356.0,
+      "llm_mean": 1.77,
+      "llm_sd": 0.179,
+      "batch_means": [
+        1.6,
+        2.018,
+        1.692
+      ]
+    },
+    {
+      "policy": "heur-mix0.10",
+      "real_new": 487,
+      "llm_mean": 1.833,
+      "llm_sd": 0.17,
+      "batch_means": [
+        1.931,
+        1.974,
+        1.593
+      ]
+    },
+    {
+      "policy": "heur-mix0.20",
+      "real_new": 686,
+      "llm_mean": 2.236,
+      "llm_sd": 0.364,
+      "batch_means": [
+        2.74,
+        2.073,
+        1.894
+      ]
+    },
+    {
+      "policy": "heur-mix0.30",
+      "real_new": 818,
+      "llm_mean": 2.389,
+      "llm_sd": 0.206,
+      "batch_means": [
+        2.598,
+        2.461,
+        2.109
+      ]
+    },
+    {
+      "policy": "heur-mix0.40",
+      "real_new": 825,
+      "llm_mean": 2.698,
+      "llm_sd": 0.757,
+      "batch_means": [
+        3.763,
+        2.26,
+        2.071
+      ]
+    },
+    {
+      "policy": "heur-mix0.50",
+      "real_new": 824.0,
+      "llm_mean": 2.568,
+      "llm_sd": 0.423,
+      "batch_means": [
+        3.162,
+        2.206,
+        2.336
+      ]
+    },
+    {
+      "policy": "heur-mix0.60",
+      "real_new": 833,
+      "llm_mean": 3.19,
+      "llm_sd": 0.103,
+      "batch_means": [
+        3.086,
+        3.33,
+        3.153
+      ]
+    },
+    {
+      "policy": "heur-mix0.70",
+      "real_new": 814,
+      "llm_mean": 2.865,
+      "llm_sd": 0.122,
+      "batch_means": [
+        2.98,
+        2.919,
+        2.697
+      ]
+    },
+    {
+      "policy": "heur-mix0.80",
+      "real_new": 787,
+      "llm_mean": 3.242,
+      "llm_sd": 0.309,
+      "batch_means": [
+        2.957,
+        3.672,
+        3.097
+      ]
+    },
+    {
+      "policy": "heur-mix0.90",
+      "real_new": 762,
+      "llm_mean": 3.219,
+      "llm_sd": 0.341,
+      "batch_means": [
+        3.236,
+        3.627,
+        2.793
+      ]
+    },
+    {
+      "policy": "gen-mix0.3",
+      "real_new": 586,
+      "llm_mean": 1.844,
+      "llm_sd": 0.389,
+      "batch_means": [
+        2.25,
+        1.961,
+        1.32
+      ]
+    },
+    {
+      "policy": "gen-mix0.6",
+      "real_new": 761,
+      "llm_mean": 1.575,
+      "llm_sd": 0.311,
+      "batch_means": [
+        1.983,
+        1.513,
+        1.228
+      ]
+    },
+    {
+      "policy": "mA-mix0.3",
+      "real_new": 562,
+      "llm_mean": 2.326,
+      "llm_sd": 0.484,
+      "batch_means": [
+        2.976,
+        1.817,
+        2.184
+      ]
+    },
+    {
+      "policy": "mA-mix0.6",
+      "real_new": 594,
+      "llm_mean": 2.428,
+      "llm_sd": 0.121,
+      "batch_means": [
+        2.48,
+        2.261,
+        2.543
+      ]
+    },
+    {
+      "policy": "mB-mix0.3",
+      "real_new": 468,
+      "llm_mean": 1.898,
+      "llm_sd": 0.165,
+      "batch_means": [
+        1.672,
+        2.06,
+        1.961
+      ]
+    },
+    {
+      "policy": "mB-mix0.6",
+      "real_new": 426,
+      "llm_mean": 2.414,
+      "llm_sd": 0.191,
+      "batch_means": [
+        2.606,
+        2.482,
+        2.153
+      ]
+    },
+    {
+      "policy": "tabQ c0 s0",
+      "real_new": 22,
+      "llm_mean": 1.794,
+      "llm_sd": 0.276,
+      "batch_means": [
+        2.157,
+        1.737,
+        1.488
+      ]
+    },
+    {
+      "policy": "tabQ c0 s1",
+      "real_new": 907,
+      "llm_mean": 3.543,
+      "llm_sd": 0.319,
+      "batch_means": [
+        3.957,
+        3.49,
+        3.182
+      ]
+    },
+    {
+      "policy": "tabQ c0 s2",
+      "real_new": 776,
+      "llm_mean": 2.591,
+      "llm_sd": 0.062,
+      "batch_means": [
+        2.564,
+        2.532,
+        2.677
+      ]
+    },
+    {
+      "policy": "tabQ c0 s3",
+      "real_new": 905,
+      "llm_mean": 2.757,
+      "llm_sd": 0.475,
+      "batch_means": [
+        3.019,
+        3.162,
+        2.091
+      ]
+    },
+    {
+      "policy": "tabQ c1 s0",
+      "real_new": 705,
+      "llm_mean": 2.55,
+      "llm_sd": 0.381,
+      "batch_means": [
+        3.044,
+        2.489,
+        2.118
+      ]
+    },
+    {
+      "policy": "tabQ c1 s1",
+      "real_new": 913,
+      "llm_mean": 3.119,
+      "llm_sd": 0.369,
+      "batch_means": [
+        2.624,
+        3.508,
+        3.226
+      ]
+    },
+    {
+      "policy": "tabQ c1 s2",
+      "real_new": 834,
+      "llm_mean": 2.766,
+      "llm_sd": 0.343,
+      "batch_means": [
+        3.127,
+        2.866,
+        2.304
+      ]
+    },
+    {
+      "policy": "tabQ c1 s3",
+      "real_new": 765,
+      "llm_mean": 2.512,
+      "llm_sd": 0.289,
+      "batch_means": [
+        2.7,
+        2.104,
+        2.733
+      ]
+    },
+    {
+      "policy": "tabQ c2 s0",
+      "real_new": 791,
+      "llm_mean": 2.733,
+      "llm_sd": 0.11,
+      "batch_means": [
+        2.719,
+        2.874,
+        2.606
+      ]
+    },
+    {
+      "policy": "tabQ c2 s1",
+      "real_new": 671,
+      "llm_mean": 2.821,
+      "llm_sd": 0.176,
+      "batch_means": [
+        2.576,
+        2.905,
+        2.981
+      ]
+    },
+    {
+      "policy": "tabQ c2 s2",
+      "real_new": 387,
+      "llm_mean": 2.059,
+      "llm_sd": 0.06,
+      "batch_means": [
+        2.115,
+        2.086,
+        1.975
+      ]
+    },
+    {
+      "policy": "tabQ c2 s3",
+      "real_new": 853,
+      "llm_mean": 2.653,
+      "llm_sd": 0.159,
+      "batch_means": [
+        2.444,
+        2.686,
+        2.83
+      ]
+    },
+    {
+      "policy": "online-tabQ s0",
+      "real_new": 1109.0,
+      "llm_mean": 2.59,
+      "llm_sd": 0.245,
+      "batch_means": [
+        2.243,
+        2.764,
+        2.762
+      ]
+    },
+    {
+      "policy": "online-tabQ s1",
+      "real_new": 989.0,
+      "llm_mean": 3.38,
+      "llm_sd": 0.142,
+      "batch_means": [
+        3.349,
+        3.567,
+        3.224
+      ]
+    },
+    {
+      "policy": "online-tabQ s2",
+      "real_new": 942.0,
+      "llm_mean": 3.458,
+      "llm_sd": 0.321,
+      "batch_means": [
+        3.506,
+        3.824,
+        3.043
+      ]
+    },
+    {
+      "policy": "online-eps0.2 s0",
+      "real_new": 573,
+      "llm_mean": 2.086,
+      "llm_sd": 0.551,
+      "batch_means": [
+        2.587,
+        2.352,
+        1.319
+      ]
+    },
+    {
+      "policy": "online-eps0.4 s0",
+      "real_new": 877,
+      "llm_mean": 1.888,
+      "llm_sd": 0.035,
+      "batch_means": [
+        1.839,
+        1.914,
+        1.911
+      ]
+    },
+    {
+      "policy": "online-eps0.6 s0",
+      "real_new": 992,
+      "llm_mean": 2.58,
+      "llm_sd": 0.099,
+      "batch_means": [
+        2.588,
+        2.455,
+        2.697
+      ]
+    },
+    {
+      "policy": "online-eps0.8 s0",
+      "real_new": 1093,
+      "llm_mean": 2.599,
+      "llm_sd": 0.442,
+      "batch_means": [
+        3.198,
+        2.143,
+        2.457
+      ]
+    },
+    {
+      "policy": "online-eps0.2 s1",
+      "real_new": 494,
+      "llm_mean": 1.941,
+      "llm_sd": 0.35,
+      "batch_means": [
+        2.287,
+        2.076,
+        1.461
+      ]
+    },
+    {
+      "policy": "online-eps0.4 s1",
+      "real_new": 728,
+      "llm_mean": 2.89,
+      "llm_sd": 0.747,
+      "batch_means": [
+        3.891,
+        2.681,
+        2.098
+      ]
+    },
+    {
+      "policy": "online-eps0.6 s1",
+      "real_new": 856,
+      "llm_mean": 2.623,
+      "llm_sd": 0.29,
+      "batch_means": [
+        3.007,
+        2.306,
+        2.556
+      ]
+    },
+    {
+      "policy": "online-eps0.8 s1",
+      "real_new": 960,
+      "llm_mean": 3.122,
+      "llm_sd": 0.512,
+      "batch_means": [
+        2.724,
+        3.844,
+        2.797
+      ]
+    },
+    {
+      "policy": "online-eps0.2 s2",
+      "real_new": 517,
+      "llm_mean": 2.049,
+      "llm_sd": 0.229,
+      "batch_means": [
+        2.354,
+        1.992,
+        1.802
+      ]
+    },
+    {
+      "policy": "online-eps0.4 s2",
+      "real_new": 751,
+      "llm_mean": 2.68,
+      "llm_sd": 0.449,
+      "batch_means": [
+        3.068,
+        2.922,
+        2.05
+      ]
+    },
+    {
+      "policy": "online-eps0.6 s2",
+      "real_new": 860,
+      "llm_mean": 2.315,
+      "llm_sd": 0.182,
+      "batch_means": [
+        2.538,
+        2.092,
+        2.316
+      ]
+    },
+    {
+      "policy": "online-eps0.8 s2",
+      "real_new": 914,
+      "llm_mean": 2.962,
+      "llm_sd": 0.294,
+      "batch_means": [
+        3.106,
+        3.228,
+        2.553
+      ]
+    },
+    {
+      "policy": "observable-ceiling",
+      "real_new": 1066,
+      "llm_mean": 2.278,
+      "llm_sd": 0.21,
+      "batch_means": [
+        2.185,
+        2.568,
+        2.08
+      ]
+    }
+  ]
+}

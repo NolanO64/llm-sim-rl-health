@@ -1,0 +1,25 @@
+{
+  "llm": {
+    "experiment": 542,
+    "n_total_patients": 96,
+    "n_post_anchor_patients": 87,
+    "n_c2st_patients": 77,
+    "mean_real": 0.6799247331000204,
+    "mean_simulated": 0.3890727979558584,
+    "c2st_accuracy": 0.7532467532467533,
+    "spearman_patient": 0.5478103594949489,
+    "heterogeneity_ratio": 0.7679590025726998
+  },
+  "anchor_mean": {
+    "experiment": 538,
+    "n_total_patients": 96,
+    "n_post_anchor_patients": 87,
+    "n_c2st_patients": 77,
+    "mean_real": 0.6799247331000204,
+    "mean_simulated": 0.4789786398893942,
+    "c2st_accuracy": 0.6948051948051948,
+    "spearman_patient": 0.6244644888741527,
+    "heterogeneity_ratio": 0.7194196942831197
+  },
+  "note": "Saved run summary; trajectory-level C2ST is recomputed by experiments/realism_hptn.py."
+}
