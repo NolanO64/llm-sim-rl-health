@@ -1,8 +1,8 @@
 # Core
-numpy>=2.0
+numpy>=1.26,<2          # StepCountJITAI converts size-1 arrays with float(...)
 gymnasium>=1.0          # the StepCountJITAI environment
-scipy>=1.10             # StepCountJITAI samples its noise with scipy.stats
-scikit-learn>=1.3       # StepCountJITAI's observation encoding
+scipy>=1.13,<1.14       # StepCountJITAI samples its noise with scipy.stats
+scikit-learn>=1.4,<1.5  # StepCountJITAI's observation encoding
 
 # Language-model experiments (corpus generation and policy scoring only)
 openai>=2.0             # OpenAI-compatible client for the Nebula gateway
