@@ -1,0 +1,43 @@
+{
+  "n_policies": 49,
+  "true_best": {
+    "policy": "online-tabQ s0",
+    "reference_return": 1109.0,
+    "llm_score": 2.59,
+    "llm_rank": 24
+  },
+  "simulator_top": {
+    "policy": "tabQ c0 s1",
+    "llm_score": 3.543,
+    "reference_return": 907.0,
+    "reference_rank": 9
+  },
+  "simple_regret": 202.0,
+  "relative_regret_percent": 18.2,
+  "topk": {
+    "1": {
+      "overlap": 0,
+      "contains_true_best": false,
+      "best_reference_return_in_llm_topk": 907.0,
+      "topk_regret": 202.0
+    },
+    "3": {
+      "overlap": 0,
+      "contains_true_best": false,
+      "best_reference_return_in_llm_topk": 989.0,
+      "topk_regret": 120.0
+    },
+    "5": {
+      "overlap": 1,
+      "contains_true_best": false,
+      "best_reference_return_in_llm_topk": 989.0,
+      "topk_regret": 120.0
+    },
+    "10": {
+      "overlap": 6,
+      "contains_true_best": false,
+      "best_reference_return_in_llm_topk": 989.0,
+      "topk_regret": 120.0
+    }
+  }
+}
