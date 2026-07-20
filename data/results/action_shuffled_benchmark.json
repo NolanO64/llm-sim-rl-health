@@ -1,0 +1,541 @@
+{
+  "control": "action_label_controls",
+  "config": "paper",
+  "n_episodes": 80,
+  "floor": 22,
+  "random": 575,
+  "heuristic": 781,
+  "original_offline_q": [
+    667,
+    273
+  ],
+  "action_shuffled_offline_q": [
+    457,
+    297
+  ],
+  "neutralized_offline_q": [
+    657,
+    233
+  ],
+  "policy_details": {
+    "original": [
+      {
+        "corpus": 0,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            3
+          ]
+        ],
+        "return": 22.24
+      },
+      {
+        "corpus": 0,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            2,
+            2,
+            0,
+            0
+          ],
+          [
+            3,
+            1,
+            3,
+            0
+          ]
+        ],
+        "return": 907.486
+      },
+      {
+        "corpus": 0,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            0,
+            2,
+            1,
+            2
+          ],
+          [
+            3,
+            3,
+            0,
+            0
+          ]
+        ],
+        "return": 775.695
+      },
+      {
+        "corpus": 1,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            2,
+            3,
+            3,
+            0
+          ],
+          [
+            3,
+            3,
+            3,
+            1
+          ]
+        ],
+        "return": 705.081
+      },
+      {
+        "corpus": 1,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            2,
+            0,
+            3,
+            0
+          ],
+          [
+            3,
+            0,
+            0,
+            2
+          ]
+        ],
+        "return": 912.928
+      },
+      {
+        "corpus": 1,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            1,
+            0,
+            2,
+            0
+          ],
+          [
+            3,
+            3,
+            0,
+            1
+          ]
+        ],
+        "return": 834.19
+      },
+      {
+        "corpus": 2,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            2,
+            1,
+            0,
+            1
+          ],
+          [
+            3,
+            3,
+            3,
+            3
+          ]
+        ],
+        "return": 791.294
+      },
+      {
+        "corpus": 2,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            2,
+            3,
+            2,
+            0
+          ],
+          [
+            3,
+            2,
+            3,
+            0
+          ]
+        ],
+        "return": 671.121
+      },
+      {
+        "corpus": 2,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            3,
+            0,
+            2,
+            1
+          ],
+          [
+            1,
+            0,
+            2,
+            3
+          ]
+        ],
+        "return": 387.063
+      }
+    ],
+    "action_shuffled": [
+      {
+        "corpus": 0,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            3,
+            0
+          ]
+        ],
+        "return": 22.24
+      },
+      {
+        "corpus": 0,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            3,
+            0,
+            1
+          ]
+        ],
+        "return": 420.569
+      },
+      {
+        "corpus": 0,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            2,
+            3,
+            2,
+            0
+          ],
+          [
+            3,
+            0,
+            0,
+            3
+          ]
+        ],
+        "return": 720.134
+      },
+      {
+        "corpus": 1,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            2,
+            0,
+            3,
+            0
+          ],
+          [
+            1,
+            3,
+            0,
+            0
+          ]
+        ],
+        "return": 906.847
+      },
+      {
+        "corpus": 1,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            3,
+            0,
+            2,
+            0
+          ],
+          [
+            2,
+            2,
+            0,
+            0
+          ]
+        ],
+        "return": 235.156
+      },
+      {
+        "corpus": 1,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            3,
+            0,
+            3,
+            0
+          ],
+          [
+            0,
+            3,
+            0,
+            0
+          ]
+        ],
+        "return": 319.911
+      },
+      {
+        "corpus": 2,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            2,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            2,
+            3,
+            0
+          ]
+        ],
+        "return": 906.847
+      },
+      {
+        "corpus": 2,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            3,
+            1,
+            3,
+            3
+          ],
+          [
+            0,
+            2,
+            3,
+            3
+          ]
+        ],
+        "return": 344.478
+      },
+      {
+        "corpus": 2,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            3,
+            0,
+            1,
+            2
+          ],
+          [
+            2,
+            0,
+            3,
+            3
+          ]
+        ],
+        "return": 233.655
+      }
+    ],
+    "neutralized": [
+      {
+        "corpus": 0,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "return": 22.24
+      },
+      {
+        "corpus": 0,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            1,
+            0
+          ]
+        ],
+        "return": 703.81
+      },
+      {
+        "corpus": 0,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ],
+        "return": 758.119
+      },
+      {
+        "corpus": 1,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "return": 665.657
+      },
+      {
+        "corpus": 1,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ],
+        "return": 813.295
+      },
+      {
+        "corpus": 1,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            1
+          ]
+        ],
+        "return": 813.295
+      },
+      {
+        "corpus": 2,
+        "seed": 0,
+        "greedy_actions": [
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "return": 676.279
+      },
+      {
+        "corpus": 2,
+        "seed": 1,
+        "greedy_actions": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ],
+        "return": 643.702
+      },
+      {
+        "corpus": 2,
+        "seed": 2,
+        "greedy_actions": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1,
+            1
+          ]
+        ],
+        "return": 813.295
+      }
+    ]
+  }
+}
