@@ -100,6 +100,54 @@ def _parse_json(text):
         return {}
 
 
+def _response_debug(response):
+    choice = response.choices[0]
+    message = getattr(choice, "message", None)
+    content = getattr(message, "content", "") or ""
+    usage = getattr(response, "usage", None)
+    reasoning_tokens = None
+    if usage is not None:
+        details = getattr(usage, "completion_tokens_details", None)
+        reasoning_tokens = getattr(details, "reasoning_tokens", None)
+    return {
+        "finish_reason": getattr(choice, "finish_reason", None),
+        "content_preview": content[:120],
+        "reasoning_tokens": reasoning_tokens,
+    }
+
+
+def _require_json(response, required_keys):
+    content = response.choices[0].message.content or ""
+    parsed = _parse_json(content)
+    missing = [key for key in required_keys if key not in parsed]
+    if missing:
+        raise ValueError(
+            "LLM response missing required JSON keys %s; debug=%s"
+            % (missing, _response_debug(response))
+        )
+    return parsed
+
+
+def _bounded_activity(value):
+    try:
+        return max(0.0, min(1.0, float(value)))
+    except (TypeError, ValueError) as error:
+        raise ValueError(f"invalid activity value from LLM: {value!r}") from error
+
+
+def _chat(client, *, backend="nebula", **kwargs):
+    if backend.lower() == "openai":
+        if "max_tokens" in kwargs:
+            kwargs["max_completion_tokens"] = kwargs.pop("max_tokens")
+        if str(kwargs.get("model", "")).startswith("gpt-5"):
+            kwargs.pop("temperature", None)
+            kwargs.setdefault("reasoning_effort", "minimal")
+    extra_body = reasoning_extra_body(backend=backend)
+    if extra_body is not None:
+        kwargs["extra_body"] = extra_body
+    return chat(client, **kwargs)
+
+
 def _emit(emitter, latent, action, history, rng):
     state = OutcomeModelState(
         dataset_id="llmworld", patient_id="synthetic",
@@ -123,13 +171,13 @@ def _generation_history(rows):
     return "History of previous days:\n" + "\n".join(lines)
 
 
-def generate_trajectory(client, person, actions, seed, model=MODEL):
+def generate_trajectory(client, person, actions, seed, model=MODEL, backend="nebula",
+                        temperature=0.7, max_tokens=200):
     """Autoregressively generate one patient's trajectory (one model call per day)."""
     emitter = make_emitter()
     emit_rng = random.Random(seed)
     history = []   # realised outcomes -> emission self-anchor
     rows = []
-    extra_body = reasoning_extra_body()
     for t, action in enumerate(actions):
         prompt = (
             "This person: %s.\n%s\nToday is day %d. The app takes action: %s. "
@@ -138,15 +186,16 @@ def generate_trajectory(client, person, actions, seed, model=MODEL):
             'Output JSON {"context":"A"|"B","activity":0.0-1.0,"quit":true|false}.'
             % (person, _generation_history(rows), t, ACTIONS[action])
         )
-        response = chat(
+        response = _chat(
             client, model=model,
+            backend=backend,
             messages=[{"role": "system", "content": GENERATION_SYSTEM},
                       {"role": "user", "content": prompt}],
-            temperature=0.7, max_tokens=200, response_format={"type": "json_object"},
-            extra_body=extra_body, seed=seed + t,
+            temperature=temperature, max_tokens=max_tokens, response_format={"type": "json_object"},
+            seed=seed + t,
         )
-        parsed = _parse_json(response.choices[0].message.content)
-        latent = max(0.0, min(1.0, float(parsed.get("activity", 0.0))))
+        parsed = _require_json(response, required_keys=("activity", "context", "quit"))
+        latent = _bounded_activity(parsed["activity"])
         context = "A" if str(parsed.get("context", "A")).upper().startswith("A") else "B"
         quit_ = bool(parsed.get("quit", False))
         outcome = _emit(emitter, latent, ACTIONS[action], history, emit_rng)
@@ -169,7 +218,9 @@ def _scoring_history(rows):
     return "History:\n" + "\n".join(lines)
 
 
-def llm_day_step(client, person, rows, context, action_name, model=MODEL, system=SCORING_SYSTEM):
+def llm_day_step(client, person, rows, context, action_name, model=MODEL,
+                 system=SCORING_SYSTEM, backend="nebula", temperature=0.7,
+                 max_tokens=120):
     """One environment step: given the action, the model returns today's latent
     activity, whether the patient has quit, and tomorrow's context."""
     prompt = (
@@ -177,14 +228,14 @@ def llm_day_step(client, person, rows, context, action_name, model=MODEL, system
         'Output JSON {"activity":0.0-1.0,"quit":true|false,"next_context":"A"|"B"}.'
         % (person, _scoring_history(rows), len(rows), context, action_name)
     )
-    response = chat(
+    response = _chat(
         client, model=model,
+        backend=backend,
         messages=[{"role": "system", "content": system}, {"role": "user", "content": prompt}],
-        temperature=0.7, max_tokens=120, response_format={"type": "json_object"},
-        extra_body=reasoning_extra_body(),
+        temperature=temperature, max_tokens=max_tokens, response_format={"type": "json_object"},
     )
-    parsed = _parse_json(response.choices[0].message.content)
-    latent = max(0.0, min(1.0, float(parsed.get("activity", 0.0))))
+    parsed = _require_json(response, required_keys=("activity", "quit", "next_context"))
+    latent = _bounded_activity(parsed["activity"])
     quit_ = bool(parsed.get("quit", False))
     next_context = "A" if str(parsed.get("next_context", context)).upper().startswith("A") else "B"
     return latent, quit_, next_context
@@ -195,8 +246,8 @@ def emit_outcome(emitter, latent, action_name, history, rng):
     return _emit(emitter, latent, action_name, history, rng)
 
 
-def rollout_policy(client, policy, seed, model=MODEL, system=SCORING_SYSTEM,
-                   episode_length=EPISODE_LENGTH):
+def rollout_policy(client, policy, seed, model=MODEL, system=SCORING_SYSTEM, backend="nebula",
+                   episode_length=EPISODE_LENGTH, temperature=0.7, max_tokens=120):
     """Score one policy on one synthetic patient inside the LLM world.
 
     The policy chooses each action from the current context; the model returns the
@@ -217,7 +268,8 @@ def rollout_policy(client, policy, seed, model=MODEL, system=SCORING_SYSTEM,
         context_index = 0 if context == "A" else 1
         action = int(policy({"c_infer": context_index, "c_true": context_index}, streak, policy_rng))
         latent, quit_, next_context = llm_day_step(
-            client, person, rows, context, ACTIONS[action], model=model, system=system
+            client, person, rows, context, ACTIONS[action], model=model, system=system,
+            backend=backend, temperature=temperature, max_tokens=max_tokens
         )
         outcome = _emit(emitter, latent, ACTIONS[action], [r["outcome"] for r in rows], emit_rng)
         rows.append({"context": context, "action": action, "outcome": round(outcome, 3), "quit": quit_})

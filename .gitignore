@@ -2,6 +2,8 @@ __pycache__/
 *.pyc
 .env
 .venv/
+*.log
+*.err
 
 # Third-party datasets and environments are obtained from their original sources.
 datasets/heartsteps_v1/
@@ -14,5 +16,9 @@ data/realism/heartsteps_run.json
 data/realism/*_new.json
 data/corpora/llmworld_corpus_new.json
 data/online_q/online_qtables_new.json
+data/online_q/*_tmp.json
+data/online_q/launcher_*
+data/online_q/full_launch_debug.*
 data/results/reference_ladder_new.json
 data/results/benchmark_sigma_sweep_new.json
+data/**/*.failures.json

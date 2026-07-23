@@ -1,9 +1,9 @@
-"""Client for the Nebula OpenAI-compatible gateway used to query the language model.
+"""Client helpers for OpenAI-compatible chat-completions backends.
 
 Besides the usual rate-limit / 5xx / timeout errors, the Nebula gateway reports
 model cooldown and its five-concurrent-request limit as HTTP 400s; those must be
 retried with backoff rather than raised. The API key is read from the environment
-(NEBULA_API_KEY), optionally via a .env file at the repository root.
+(NEBULA_API_KEY or OPENAI_API_KEY), optionally via a .env file at the repository root.
 """
 import os
 import random
@@ -41,12 +41,19 @@ def _is_transient_400(error):
     return any(marker in message for marker in _TRANSIENT_400_MARKERS)
 
 
-def build_client():
-    return OpenAI(base_url=NEBULA_BASE_URL, api_key=os.environ["NEBULA_API_KEY"])
+def build_client(backend="nebula"):
+    backend = backend.lower()
+    if backend == "nebula":
+        return OpenAI(base_url=NEBULA_BASE_URL, api_key=os.environ["NEBULA_API_KEY"])
+    if backend == "openai":
+        return OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    raise ValueError(f"unknown LLM backend: {backend}")
 
 
-def reasoning_extra_body(thinking=False):
-    """Gateway-specific control that disables the model's chain-of-thought."""
+def reasoning_extra_body(backend="nebula", thinking=False):
+    """Backend-specific reasoning controls, when supported."""
+    if backend.lower() == "openai":
+        return None
     return {"chat_template_kwargs": {"enable_thinking": thinking}}
 
 

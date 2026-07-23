@@ -1,23 +1,29 @@
-"""Online tabular Q-learning inside the LLM world (produces data/online_q).
+"""Online LLM-world controls with corrupted action labels.
 
-Growing-batch training: in each round the current policy (epsilon-greedy on the
-tabular Q) chooses every action, the language model simulates the day, and the
-Q-table is refit from scratch on the growing buffer of transitions. The real
-environment is never touched during training -- an assertion enforces that the
-StepCountJITAI module is not even imported -- so the resulting policies are
-trained purely on synthetic experience. Their real-environment evaluation is done
-afterwards by experiments/reference_ladder.py.
+The original online benchmark lets the learner choose an action and sends that
+same action label to the LLM environment. This script keeps the learner and Q
+update unchanged, but corrupts the action label seen by the LLM:
 
-The committed data/online_q/online_qtables.json was produced by this procedure
-(budget 8000 transitions per seed, seeds 0/1/2). The language model is stochastic,
-so a fresh run gives policies of the same quality, not bit-identical Q-tables.
+* neutralized: none stays none; every nonzero message is shown as generic;
+* random-label: each chosen action is replaced by a random action label.
 
-Requires NEBULA_API_KEY. A full-budget run is hours of model calls;
---smoke does one tiny round to check the loop end-to-end.
+The Q-table is still updated under the learner's chosen action. The LLM history
+also records the corrupted label, so the simulated patient never sees the true
+fine-grained action semantics in the control environment.
 
-  python experiments/train_online_llm.py --smoke
-  python experiments/train_online_llm.py --budget 8000 --seeds 0,1,2 --out data/online_q/online_qtables_new.json
+Requires NEBULA_API_KEY and the openai/python-dotenv packages. A full run has the
+same order of cost as experiments/train_online_llm.py.
+
+Examples:
+
+  python experiments/train_online_action_control.py --smoke
+  python experiments/train_online_action_control.py --mode neutralized --budget 8000 --seeds 0,1,2
+  python experiments/train_online_action_control.py --mode neutralized --resume
+  PYTHONPATH=/path/to/StepCountJITAI python experiments/train_online_action_control.py --evaluate
+  PYTHONPATH=/path/to/StepCountJITAI python experiments/train_online_action_control.py --evaluate-only --out data/results/online_action_control_neutralized.json
 """
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -33,18 +39,31 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.llm_client import build_client
 from src.llm_world import ACTIONS, EPISODE_LENGTH, emit_outcome, llm_day_step, make_emitter, persona
-from src.paths import ONLINE_Q_DIR
+from src.paths import RESULTS_DIR
+
 
 GAMMA = 0.9
 EPISODES_PER_ROUND = 40
-WORKERS = 4  # concurrent patients; stays under the gateway's request limit
+WORKERS = 4
 Q_REFIT_PASSES = 60
 Q_ALPHA = 0.1
 
 
-def collect_episode(client, Q, eps, seed, model, backend, temperature, max_tokens):
-    """One interactive episode under the current policy; returns its transitions."""
+def corrupt_action(action, mode, rng):
+    """Return the action label shown to the LLM control environment."""
+    action = int(action)
+    if mode == "canonical":
+        return action
+    if mode == "neutralized":
+        return 0 if action == 0 else 1
+    if mode == "random-label":
+        return int(rng.integers(4))
+    raise ValueError(f"unknown action-label mode: {mode}")
+
+
+def collect_episode(client, Q, eps, seed, mode, model, backend, temperature, max_tokens):
     rng = np.random.default_rng(seed)
+    label_rng = np.random.default_rng(seed + 31)
     emit_rng = random.Random(seed + 7)
     emitter = make_emitter()
     person = persona(rng)
@@ -54,24 +73,33 @@ def collect_episode(client, Q, eps, seed, model, backend, temperature, max_token
     seq = []
     for _ in range(EPISODE_LENGTH):
         c = 0 if context == "A" else 1
-        # same bucketing as stepcount.message_bucket; not imported from there because
-        # src.stepcount loads the real environment, which must stay out of training
         b = min(streak, 3)
         if rng.random() < eps:
             action = int(rng.integers(4))
         else:
             action = int(Q[c, b].argmax())
+
+        shown_action = corrupt_action(action, mode, label_rng)
         latent, quit_, next_context = llm_day_step(
-            client, person, rows, context, ACTIONS[action], model=model,
-            backend=backend, temperature=temperature, max_tokens=max_tokens
+            client, person, rows, context, ACTIONS[shown_action],
+            model=model, backend=backend, temperature=temperature, max_tokens=max_tokens
         )
-        outcome = emit_outcome(emitter, latent, ACTIONS[action], [r["outcome"] for r in rows], emit_rng)
-        rows.append({"context": context, "action": action, "outcome": round(outcome, 3), "quit": quit_})
+        outcome = emit_outcome(
+            emitter, latent, ACTIONS[shown_action], [r["outcome"] for r in rows], emit_rng
+        )
+        rows.append({
+            "context": context,
+            "action": shown_action,
+            "chosen_action": action,
+            "outcome": round(outcome, 3),
+            "quit": quit_,
+        })
         seq.append((c, b, action, outcome))
         streak = 0 if action == 0 else streak + 1
         if quit_:
             break
         context = next_context
+
     transitions = []
     for i, (c, b, a, r) in enumerate(seq):
         if i + 1 < len(seq):
@@ -82,7 +110,6 @@ def collect_episode(client, Q, eps, seed, model, backend, temperature, max_token
 
 
 def refit_q(buffer, passes=Q_REFIT_PASSES, alpha=Q_ALPHA):
-    """Refit the Q-table from scratch on the whole buffer (growing-batch)."""
     Q = np.zeros((2, 4, 4))
     rng = np.random.default_rng(0)
     order = list(range(len(buffer)))
@@ -109,8 +136,9 @@ def _restore_buffer(rows):
     ]
 
 
-def train_seed(client, seed, budget, model, backend, temperature, max_tokens,
-               episodes_per_round=EPISODES_PER_ROUND, state=None, checkpoint=None):
+def train_seed(client, seed, budget, mode, model, backend, temperature, max_tokens,
+               episodes_per_round=EPISODES_PER_ROUND,
+               state=None, checkpoint=None):
     start = time.time()
     if state:
         buffer = _restore_buffer(state.get("buffer", []))
@@ -132,15 +160,15 @@ def train_seed(client, seed, budget, model, backend, temperature, max_tokens,
         with ThreadPoolExecutor(max_workers=WORKERS) as pool:
             for transitions in pool.map(
                 lambda s: collect_episode(
-                    client, Q, eps, s, model, backend, temperature, max_tokens
+                    client, Q, eps, s, mode, model, backend, temperature, max_tokens
                 ),
                 seeds
             ):
                 buffer += transitions
                 steps += len(transitions)
         Q = refit_q(buffer)
-        print("  seed %d round %2d | steps %5d/%d | eps %.2f | %.0fs"
-              % (seed, round_no, steps, budget, eps, time.time() - start), flush=True)
+        print("  %s seed %d round %2d | steps %5d/%d | eps %.2f | %.0fs"
+              % (mode, seed, round_no, steps, budget, eps, time.time() - start), flush=True)
         if checkpoint:
             checkpoint({
                 "seed": seed,
@@ -157,12 +185,15 @@ def train_seed(client, seed, budget, model, backend, temperature, max_tokens,
 def evaluate_qtables(qtables, config, n_episodes):
     from src.stepcount import evaluate_real
 
+    def message_bucket(streak):
+        return min(streak, 3)
+
     values = []
     for Q in qtables:
         Q = np.asarray(Q)
 
         def policy(obs, streak, rng):
-            return int(Q[int(obs["c_infer"]), min(streak, 3)].argmax())
+            return int(Q[int(obs["c_infer"]), message_bucket(streak)].argmax())
 
         values.append(evaluate_real(policy, config, n_episodes=n_episodes))
     return [round(float(np.mean(values))), round(float(np.std(values)))], [round(float(v), 3) for v in values]
@@ -170,9 +201,11 @@ def evaluate_qtables(qtables, config, n_episodes):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", default="neutralized",
+                        choices=["neutralized", "random-label", "canonical"])
     parser.add_argument("--budget", type=int, default=8000, help="transitions per seed")
     parser.add_argument("--seeds", default="0,1,2")
-    parser.add_argument("--out", default=str(ONLINE_Q_DIR / "online_qtables_new.json"))
+    parser.add_argument("--out", default=None)
     parser.add_argument("--backend", default="nebula", choices=["nebula", "openai"])
     parser.add_argument("--model", default=None, help="LLM deployment name for the online world")
     parser.add_argument("--temperature", type=float, default=0.7)
@@ -182,17 +215,11 @@ def main():
     parser.add_argument("--evaluate-only", action="store_true",
                         help="evaluate existing Q-tables in --out without making LLM calls")
     parser.add_argument("--resume", action="store_true",
-                        help="skip completed seeds and resume partial checkpoints in --out")
+                        help="skip seeds already present in --out")
     parser.add_argument("--config", default="paper", choices=["paper", "clean"])
     parser.add_argument("--n-episodes", type=int, default=80)
-    parser.add_argument("--smoke", action="store_true", help="one tiny round on one seed")
+    parser.add_argument("--smoke", action="store_true")
     args = parser.parse_args()
-    if args.model is None:
-        if args.backend == "openai":
-            args.model = "gpt-5-mini"
-        else:
-            from src.llm_world import MODEL
-            args.model = MODEL
 
     if args.smoke:
         args.budget, args.seeds = 30, "0"
@@ -201,24 +228,34 @@ def main():
     else:
         episodes_per_round = EPISODES_PER_ROUND
 
-    output_path = Path(args.out)
+    if args.model is None:
+        if args.backend == "openai":
+            args.model = "gpt-5-mini"
+        else:
+            from src.llm_world import MODEL
+            args.model = MODEL
+
+    if args.out is None:
+        args.out = str(RESULTS_DIR / f"online_action_control_{args.mode}.json")
+
     existing = None
     per_seed = []
+    output_path = Path(args.out)
     if output_path.exists():
         with output_path.open(encoding="utf-8") as handle:
             existing = json.load(handle)
         per_seed = list(existing.get("per_seed", []))
 
     if args.evaluate_only:
-        payload = existing or {}
         done_entries = [
             entry for entry in per_seed
             if entry.get("status", "done") == "done" and "final_Q" in entry
         ]
-        qtables = [np.array(entry["final_Q"]) for entry in done_entries]
-        if not qtables:
+        if not done_entries:
             raise RuntimeError(f"no per_seed Q-tables found in {args.out}")
+        qtables = [np.array(entry["final_Q"]) for entry in done_entries]
         summary, values = evaluate_qtables(qtables, args.config, args.n_episodes)
+        payload = existing or {}
         payload["evaluation"] = {
             "config": args.config,
             "n_episodes": args.n_episodes,
@@ -227,34 +264,39 @@ def main():
         }
         with output_path.open("w", encoding="utf-8") as handle:
             json.dump(payload, handle, indent=2)
-        print("online Q on %s: %d +/- %d" % (args.config, summary[0], summary[1]))
+        print("%s online Q on %s: %d +/- %d" % (args.mode, args.config, summary[0], summary[1]))
         return
 
-    # the whole point: training must never touch the real environment
     assert "StepCountJITAI" not in sys.modules, "real environment imported before training"
     required_key = "OPENAI_API_KEY" if args.backend == "openai" else "NEBULA_API_KEY"
     if required_key not in os.environ:
-        raise RuntimeError(f"{required_key} is required for online LLM training")
+        raise RuntimeError(f"{required_key} is required for online LLM controls")
 
     client = build_client(args.backend)
-
     def write_payload(entries):
-        with open(args.out, "w", encoding="utf-8") as f:
-            json.dump({
-                "backend": args.backend,
-                "model": args.model,
-                "budget": args.budget,
-                "budget_stopping_rule": "continue full episodes until timesteps >= budget",
-                "gamma": GAMMA,
-                "episodes_per_round": episodes_per_round,
-                "workers": WORKERS,
-                "q_refit_passes": Q_REFIT_PASSES,
-                "q_alpha": Q_ALPHA,
-                "temperature": args.temperature,
-                "max_tokens": args.max_tokens,
-                "strict_json_validation": True,
-                "per_seed": entries,
-            }, f, indent=2)
+        payload = {
+            "control": "online_action_label_control",
+            "mode": args.mode,
+            "definition": (
+                "Q-learning action is unchanged, but the action label shown to the "
+                "LLM and recorded in its history is corrupted according to mode"
+            ),
+            "backend": args.backend,
+            "model": args.model,
+            "budget": args.budget,
+            "budget_stopping_rule": "continue full episodes until timesteps >= budget",
+            "gamma": GAMMA,
+            "episodes_per_round": episodes_per_round,
+            "workers": WORKERS,
+            "q_refit_passes": Q_REFIT_PASSES,
+            "q_alpha": Q_ALPHA,
+            "temperature": args.temperature,
+            "max_tokens": args.max_tokens,
+            "strict_json_validation": True,
+            "per_seed": entries,
+        }
+        with open(args.out, "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, indent=2)
 
     def replace_seed_entry(entry):
         nonlocal per_seed
@@ -286,7 +328,7 @@ def main():
             replace_seed_entry(entry)
 
         Q, steps = train_seed(
-            client, seed, args.budget, args.model, args.backend,
+            client, seed, args.budget, args.mode, args.model, args.backend,
             args.temperature, args.max_tokens, episodes_per_round,
             state=seed_state, checkpoint=checkpoint,
         )
@@ -299,15 +341,14 @@ def main():
         print("seed %d done (%d transitions), saved -> %s" % (seed, steps, args.out), flush=True)
 
     assert "StepCountJITAI" not in sys.modules, "real environment imported during training"
+
     if args.evaluate:
-        summary, values = evaluate_qtables(
-            [
-                np.array(entry["final_Q"]) for entry in per_seed
-                if entry.get("status", "done") == "done" and "final_Q" in entry
-            ],
-            args.config,
-            args.n_episodes,
-        )
+        done_entries = [
+            entry for entry in per_seed
+            if entry.get("status", "done") == "done" and "final_Q" in entry
+        ]
+        qtables = [np.array(entry["final_Q"]) for entry in done_entries]
+        summary, values = evaluate_qtables(qtables, args.config, args.n_episodes)
         with open(args.out, encoding="utf-8") as handle:
             payload = json.load(handle)
         payload["evaluation"] = {
@@ -318,8 +359,7 @@ def main():
         }
         with open(args.out, "w", encoding="utf-8") as handle:
             json.dump(payload, handle, indent=2)
-        print("online Q on %s: %d +/- %d" % (args.config, summary[0], summary[1]))
-    print("done; evaluate the policies on the real environment with experiments/reference_ladder.py")
+        print("%s online Q on %s: %d +/- %d" % (args.mode, args.config, summary[0], summary[1]))
 
 
 if __name__ == "__main__":
