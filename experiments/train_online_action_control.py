@@ -45,6 +45,8 @@ from src.paths import RESULTS_DIR
 GAMMA = 0.9
 EPISODES_PER_ROUND = 40
 WORKERS = 4
+Q_REFIT_PASSES = 60
+Q_ALPHA = 0.1
 
 
 def corrupt_action(action, mode, rng):
@@ -59,7 +61,7 @@ def corrupt_action(action, mode, rng):
     raise ValueError(f"unknown action-label mode: {mode}")
 
 
-def collect_episode(client, Q, eps, seed, mode):
+def collect_episode(client, Q, eps, seed, mode, model, backend, temperature, max_tokens):
     rng = np.random.default_rng(seed)
     label_rng = np.random.default_rng(seed + 31)
     emit_rng = random.Random(seed + 7)
@@ -79,7 +81,8 @@ def collect_episode(client, Q, eps, seed, mode):
 
         shown_action = corrupt_action(action, mode, label_rng)
         latent, quit_, next_context = llm_day_step(
-            client, person, rows, context, ACTIONS[shown_action]
+            client, person, rows, context, ACTIONS[shown_action],
+            model=model, backend=backend, temperature=temperature, max_tokens=max_tokens
         )
         outcome = emit_outcome(
             emitter, latent, ACTIONS[shown_action], [r["outcome"] for r in rows], emit_rng
@@ -106,7 +109,7 @@ def collect_episode(client, Q, eps, seed, mode):
     return transitions
 
 
-def refit_q(buffer, passes=60, alpha=0.1):
+def refit_q(buffer, passes=Q_REFIT_PASSES, alpha=Q_ALPHA):
     Q = np.zeros((2, 4, 4))
     rng = np.random.default_rng(0)
     order = list(range(len(buffer)))
@@ -133,7 +136,8 @@ def _restore_buffer(rows):
     ]
 
 
-def train_seed(client, seed, budget, mode, episodes_per_round=EPISODES_PER_ROUND,
+def train_seed(client, seed, budget, mode, model, backend, temperature, max_tokens,
+               episodes_per_round=EPISODES_PER_ROUND,
                state=None, checkpoint=None):
     start = time.time()
     if state:
@@ -154,7 +158,12 @@ def train_seed(client, seed, budget, mode, episodes_per_round=EPISODES_PER_ROUND
         seeds = [seed * 1_000_000 + episode_id + i for i in range(episodes_per_round)]
         episode_id += episodes_per_round
         with ThreadPoolExecutor(max_workers=WORKERS) as pool:
-            for transitions in pool.map(lambda s: collect_episode(client, Q, eps, s, mode), seeds):
+            for transitions in pool.map(
+                lambda s: collect_episode(
+                    client, Q, eps, s, mode, model, backend, temperature, max_tokens
+                ),
+                seeds
+            ):
                 buffer += transitions
                 steps += len(transitions)
         Q = refit_q(buffer)
@@ -197,6 +206,10 @@ def main():
     parser.add_argument("--budget", type=int, default=8000, help="transitions per seed")
     parser.add_argument("--seeds", default="0,1,2")
     parser.add_argument("--out", default=None)
+    parser.add_argument("--backend", default="nebula", choices=["nebula", "openai"])
+    parser.add_argument("--model", default=None, help="LLM deployment name for the online world")
+    parser.add_argument("--temperature", type=float, default=0.7)
+    parser.add_argument("--max-tokens", type=int, default=120)
     parser.add_argument("--evaluate", action="store_true",
                         help="evaluate trained Q-tables on StepCountJITAI after training")
     parser.add_argument("--evaluate-only", action="store_true",
@@ -214,6 +227,13 @@ def main():
         args.n_episodes = 2
     else:
         episodes_per_round = EPISODES_PER_ROUND
+
+    if args.model is None:
+        if args.backend == "openai":
+            args.model = "gpt-5-mini"
+        else:
+            from src.llm_world import MODEL
+            args.model = MODEL
 
     if args.out is None:
         args.out = str(RESULTS_DIR / f"online_action_control_{args.mode}.json")
@@ -248,10 +268,11 @@ def main():
         return
 
     assert "StepCountJITAI" not in sys.modules, "real environment imported before training"
-    if "NEBULA_API_KEY" not in os.environ:
-        raise RuntimeError("NEBULA_API_KEY is required for online LLM controls")
+    required_key = "OPENAI_API_KEY" if args.backend == "openai" else "NEBULA_API_KEY"
+    if required_key not in os.environ:
+        raise RuntimeError(f"{required_key} is required for online LLM controls")
 
-    client = build_client()
+    client = build_client(args.backend)
     def write_payload(entries):
         payload = {
             "control": "online_action_label_control",
@@ -260,7 +281,18 @@ def main():
                 "Q-learning action is unchanged, but the action label shown to the "
                 "LLM and recorded in its history is corrupted according to mode"
             ),
+            "backend": args.backend,
+            "model": args.model,
             "budget": args.budget,
+            "budget_stopping_rule": "continue full episodes until timesteps >= budget",
+            "gamma": GAMMA,
+            "episodes_per_round": episodes_per_round,
+            "workers": WORKERS,
+            "q_refit_passes": Q_REFIT_PASSES,
+            "q_alpha": Q_ALPHA,
+            "temperature": args.temperature,
+            "max_tokens": args.max_tokens,
+            "strict_json_validation": True,
             "per_seed": entries,
         }
         with open(args.out, "w", encoding="utf-8") as handle:
@@ -296,7 +328,8 @@ def main():
             replace_seed_entry(entry)
 
         Q, steps = train_seed(
-            client, seed, args.budget, args.mode, episodes_per_round,
+            client, seed, args.budget, args.mode, args.model, args.backend,
+            args.temperature, args.max_tokens, episodes_per_round,
             state=seed_state, checkpoint=checkpoint,
         )
         replace_seed_entry({

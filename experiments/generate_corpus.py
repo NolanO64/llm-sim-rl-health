@@ -55,16 +55,26 @@ def main():
     n_patients = int(mode)
     out = sys.argv[2] if len(sys.argv) > 2 else "data/corpora/llmworld_corpus_new.json"
     corpus = []
+    failures = []
     for i in range(n_patients):
         try:
             corpus.append(build_patient(client, i))
             if i % 10 == 0:
                 print("patient %d done" % i, flush=True)
         except Exception as error:
+            failures.append({"patient_index": i, "error": str(error)})
             print("patient %d failed: %s" % (i, str(error)[:90]), flush=True)
     with open(out, "w") as f:
         json.dump(corpus, f)
     print("saved %d patients -> %s" % (len(corpus), out))
+    if failures:
+        failure_path = str(Path(out).with_suffix(".failures.json"))
+        with open(failure_path, "w", encoding="utf-8") as f:
+            json.dump(failures, f, indent=2)
+        raise RuntimeError(
+            "corpus generation had %d failed patients; partial corpus saved to %s and failures to %s"
+            % (len(failures), out, failure_path)
+        )
 
 
 if __name__ == "__main__":
