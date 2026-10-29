@@ -14,5 +14,20 @@ class TrajectoryAlignmentTests(unittest.TestCase):
                 self.assertNotIn('patients', row[key])
 
 
+class RankingRobustnessTests(unittest.TestCase):
+    def test_batch_and_family_results(self):
+        from experiments.ranking_robustness_audit import analyze
+        result = analyze()
+        self.assertEqual([r['regret'] for r in result['per_batch']], [202., 149., 196.])
+        self.assertAlmostEqual(result['within_family']['offline_rl']['relative_regret_percent'], 100*6/913)
+        self.assertEqual(result['exploratory_batch_resampling']['ordered_resamples'], 27)
+        self.assertEqual(len(result['leave_one_family_out']), 6)
+
+    def test_ties_keep_candidate_order(self):
+        from experiments.ranking_robustness_audit import ranking
+        rows = [{'policy': 'a', 'real_new': 2}, {'policy': 'b', 'real_new': 3}]
+        self.assertEqual(ranking(rows, [1,1])['selected'], 'a')
+
+
 if __name__ == '__main__':
     unittest.main()
