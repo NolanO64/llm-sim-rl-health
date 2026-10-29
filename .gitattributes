@@ -2,6 +2,7 @@
 *.pdf binary
 *.png binary
 *.zip binary
+*.gz binary
 
 data/results/*.json linguist-generated=true
 data/online_q/*.json linguist-generated=true

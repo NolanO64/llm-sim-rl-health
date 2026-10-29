@@ -29,5 +29,21 @@ class RankingRobustnessTests(unittest.TestCase):
         self.assertEqual(ranking(rows, [1,1])['selected'], 'a')
 
 
+class DirectSummaryTests(unittest.TestCase):
+    def test_direct_mean_best_and_mini_sd(self):
+        from experiments.direct_training_summary import analyze
+        r = analyze()
+        self.assertAlmostEqual(r['direct_observable_training']['mean'], 1005.3333333333334)
+        self.assertEqual(r['direct_observable_training']['maximum'], 1080)
+        self.assertAlmostEqual(r['gpt5mini']['mean'], 647.112, places=2)
+        self.assertAlmostEqual(r['gpt5mini']['population_sd'], 201.457, places=2)
+
+    def test_invalid_returns_rejected(self):
+        from experiments.direct_training_summary import summary
+        for values in ([], [1], [1,float('nan')]):
+            with self.assertRaises(ValueError):
+                summary(values)
+
+
 if __name__ == '__main__':
     unittest.main()
