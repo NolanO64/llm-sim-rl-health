@@ -1,0 +1,135 @@
+{
+  "created_utc": "2026-10-25T12:15:48.671927+00:00",
+  "protocol": {
+    "version": 1,
+    "primary_variant": "default",
+    "variants": {
+      "weak": {
+        "version": "action_conditioned_prior_v1",
+        "episode_length": 40,
+        "baseline_levels": [
+          0.04,
+          0.08,
+          0.13,
+          0.2,
+          0.3
+        ],
+        "response_levels": [
+          0.02,
+          0.06,
+          0.12,
+          0.24
+        ],
+        "fatigue_increments": [
+          0.04,
+          0.08,
+          0.16,
+          0.24
+        ],
+        "response_multiplier": 0.5,
+        "generic_fraction": 0.5,
+        "fatigue_recovery": 0.7,
+        "fatigue_baseline_penalty": 0.5,
+        "burden_memory": 0.8,
+        "burden_increment": 0.15,
+        "quit_intercept": 0.001,
+        "quit_burden_scale": 0.05,
+        "context_switch_probability": 0.5,
+        "emission_sigma": 0.9,
+        "emission_anchor_weight": 0.5
+      },
+      "default": {
+        "version": "action_conditioned_prior_v1",
+        "episode_length": 40,
+        "baseline_levels": [
+          0.04,
+          0.08,
+          0.13,
+          0.2,
+          0.3
+        ],
+        "response_levels": [
+          0.02,
+          0.06,
+          0.12,
+          0.24
+        ],
+        "fatigue_increments": [
+          0.04,
+          0.08,
+          0.16,
+          0.24
+        ],
+        "response_multiplier": 1.0,
+        "generic_fraction": 0.5,
+        "fatigue_recovery": 0.7,
+        "fatigue_baseline_penalty": 0.5,
+        "burden_memory": 0.8,
+        "burden_increment": 0.15,
+        "quit_intercept": 0.001,
+        "quit_burden_scale": 0.05,
+        "context_switch_probability": 0.5,
+        "emission_sigma": 0.9,
+        "emission_anchor_weight": 0.5
+      },
+      "strong": {
+        "version": "action_conditioned_prior_v1",
+        "episode_length": 40,
+        "baseline_levels": [
+          0.04,
+          0.08,
+          0.13,
+          0.2,
+          0.3
+        ],
+        "response_levels": [
+          0.02,
+          0.06,
+          0.12,
+          0.24
+        ],
+        "fatigue_increments": [
+          0.04,
+          0.08,
+          0.16,
+          0.24
+        ],
+        "response_multiplier": 2.0,
+        "generic_fraction": 0.5,
+        "fatigue_recovery": 0.7,
+        "fatigue_baseline_penalty": 0.5,
+        "burden_memory": 0.8,
+        "burden_increment": 0.15,
+        "quit_intercept": 0.001,
+        "quit_burden_scale": 0.05,
+        "context_switch_probability": 0.5,
+        "emission_sigma": 0.9,
+        "emission_anchor_weight": 0.5
+      }
+    },
+    "training_seeds": [
+      0,
+      1,
+      2
+    ],
+    "budget": 8000,
+    "episodes_per_round": 40,
+    "budget_stopping_rule": "complete full rounds until transitions >= budget",
+    "epsilon": "max(0.1, 1 - transitions_at_round_start / budget)",
+    "gamma": 0.9,
+    "q_refit_passes": 60,
+    "q_alpha": 0.1,
+    "q_shuffle_seed": 0,
+    "parameter_selection": "fixed qualitative-prior baseline; no reference-return or LLM-data fitting",
+    "source_sha256": {
+      "src/statistical_world.py": "5bd8a39807e4d6cf0da19a1c510c9371e1a99b7324033de2be501461a0e03e2d",
+      "src/synthetic_patient.py": "85e5247c3f90901cdee53047273482fbcf8aed984a217d5bbb1bfd43deafdff2",
+      "src/synthetic_q.py": "a7bf518be5c7a9e64555fbcd90180643837f68610a1f3bcd73823e281d9f097d",
+      "src/metrics.py": "a5f5d17f710a8283e27bf7a53ef4d71d65d71d321b1cdf5497b49f62dbfe2f2b",
+      "simulator/adherence_simulator/outcome_models.py": "f23bb3b300848070228829cc6120a1575fd82ea60f7e7a7c93198a48cf83c41b",
+      "experiments/statistical_world_benchmark.py": "2df74782645629b568f4154c522446d3a6b8a4b3cecc2928f2e612c3d67dce09",
+      "docs/action_conditioned_statistical_protocol.md": "3143a8387bf69b0359f98c33c4137823cc0776e9f7aceaf1c8d8ca4eb1588362"
+    }
+  },
+  "protocol_sha256": "14c2571d00947b7be7dba86d25df619d1edcb396c366374672d7bc8413d8c1b3"
+}
