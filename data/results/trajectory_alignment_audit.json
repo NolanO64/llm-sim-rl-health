@@ -1,0 +1,169 @@
+{
+  "scope": "Reanalysis of existing trajectories; no new simulator calls or policy training.",
+  "interpretation": "Lower classifier accuracy means harder to distinguish, not full realism.",
+  "folds": "patient-paired/disjoint as in the original classifier",
+  "p_value_note": "Naive binomial p-values omitted; paired observations are not independent trials.",
+  "source_sha256": {
+    "data/realism/heartsteps_baseline_K35.json": "00afa354cc5d95ba81f6a95b9dbd7e4e795761b41ad9868d75af6d7f40f82884",
+    "data/realism/heartsteps_emission_two_part.json": "373c75487a22c1ba21423514d81f4fe85468105478943832208abd880e77e33a",
+    "data/realism/heartsteps_emission_stateful_hint.json": "ce8ae84e6301727ee475d9d7a30837aa4cbae4307748a1bfd17631fe3a176e73"
+  },
+  "variants": [
+    {
+      "artifact": "heartsteps_baseline_K35.json",
+      "n_patient_pairs": 37,
+      "mean_aligned": {
+        "pooled": 0.973,
+        "mean": 0.975,
+        "sd": 0.05,
+        "folds": 5,
+        "per_fold": [
+          1.0,
+          0.875,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "n_items": 74,
+        "k": 72,
+        "gap": 0.407
+      },
+      "unaligned_same_features": {
+        "pooled": 0.973,
+        "mean": 0.975,
+        "sd": 0.05,
+        "folds": 5,
+        "per_fold": [
+          1.0,
+          0.875,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "n_items": 74,
+        "k": 72,
+        "gap": 0.406
+      },
+      "unaligned_including_mean": {
+        "pooled": 0.986,
+        "mean": 0.988,
+        "sd": 0.025,
+        "folds": 5,
+        "per_fold": [
+          1.0,
+          0.938,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "n_items": 74,
+        "k": 73,
+        "gap": 0.407
+      }
+    },
+    {
+      "artifact": "heartsteps_emission_two_part.json",
+      "n_patient_pairs": 37,
+      "mean_aligned": {
+        "pooled": 0.743,
+        "mean": 0.748,
+        "sd": 0.122,
+        "folds": 5,
+        "per_fold": [
+          0.688,
+          0.625,
+          0.929,
+          0.857,
+          0.643
+        ],
+        "n_items": 74,
+        "k": 55,
+        "gap": 0.201
+      },
+      "unaligned_same_features": {
+        "pooled": 0.743,
+        "mean": 0.748,
+        "sd": 0.122,
+        "folds": 5,
+        "per_fold": [
+          0.688,
+          0.625,
+          0.929,
+          0.857,
+          0.643
+        ],
+        "n_items": 74,
+        "k": 55,
+        "gap": 0.2
+      },
+      "unaligned_including_mean": {
+        "pooled": 0.757,
+        "mean": 0.763,
+        "sd": 0.137,
+        "folds": 5,
+        "per_fold": [
+          0.688,
+          0.625,
+          0.929,
+          0.929,
+          0.643
+        ],
+        "n_items": 74,
+        "k": 56,
+        "gap": 0.202
+      }
+    },
+    {
+      "artifact": "heartsteps_emission_stateful_hint.json",
+      "n_patient_pairs": 37,
+      "mean_aligned": {
+        "pooled": 0.716,
+        "mean": 0.72,
+        "sd": 0.088,
+        "folds": 5,
+        "per_fold": [
+          0.625,
+          0.688,
+          0.786,
+          0.857,
+          0.643
+        ],
+        "n_items": 74,
+        "k": 53,
+        "gap": 0.187
+      },
+      "unaligned_same_features": {
+        "pooled": 0.716,
+        "mean": 0.72,
+        "sd": 0.088,
+        "folds": 5,
+        "per_fold": [
+          0.625,
+          0.688,
+          0.786,
+          0.857,
+          0.643
+        ],
+        "n_items": 74,
+        "k": 53,
+        "gap": 0.186
+      },
+      "unaligned_including_mean": {
+        "pooled": 0.73,
+        "mean": 0.732,
+        "sd": 0.078,
+        "folds": 5,
+        "per_fold": [
+          0.688,
+          0.688,
+          0.786,
+          0.857,
+          0.643
+        ],
+        "n_items": 74,
+        "k": 54,
+        "gap": 0.192
+      }
+    }
+  ]
+}
