@@ -1,0 +1,104 @@
+{
+  "scope": "Aggregate saved-prediction audit; no new LLM calls or participant-level output.",
+  "heartsteps": {
+    "two_part": {
+      "patients": 37,
+      "post_anchor_rows": 4872,
+      "excluded_anchor_rows": 0,
+      "missing_real_post_anchor": 0,
+      "missing_sim_post_anchor": 0,
+      "actions": {
+        "0": 1994,
+        "1": 1632,
+        "2": 1246
+      },
+      "real_boundary_counts": {
+        "0": 1827,
+        "1": 67
+      },
+      "contrasts": {
+        "1": {
+          "real_pooled": -0.00040834759179499136,
+          "sim_pooled": 0.03633006739841706,
+          "sim_minus_real": 0.03673841499021205,
+          "paired_patient_bootstrap_bias_ci95": [
+            0.01661012538416849,
+            0.056562692029914666
+          ],
+          "real_patient_balanced": 0.002235696483106997,
+          "sim_patient_balanced": 0.03704185113111989,
+          "patients_with_both_arms": 37
+        },
+        "2": {
+          "real_pooled": -0.000877118246124145,
+          "sim_pooled": 0.013857719134763205,
+          "sim_minus_real": 0.01473483738088735,
+          "paired_patient_bootstrap_bias_ci95": [
+            -0.008401840964339047,
+            0.03851746973735973
+          ],
+          "real_patient_balanced": 0.0012120029252323625,
+          "sim_patient_balanced": 0.005662355135741493,
+          "patients_with_both_arms": 37
+        }
+      },
+      "bootstrap": {
+        "resamples": 2000,
+        "seed": 20261025,
+        "unit": "whole patient, paired real and simulated observations"
+      }
+    },
+    "stateful_hint": {
+      "patients": 37,
+      "post_anchor_rows": 4872,
+      "excluded_anchor_rows": 0,
+      "missing_real_post_anchor": 0,
+      "missing_sim_post_anchor": 0,
+      "actions": {
+        "0": 1994,
+        "1": 1632,
+        "2": 1246
+      },
+      "real_boundary_counts": {
+        "0": 1827,
+        "1": 67
+      },
+      "contrasts": {
+        "1": {
+          "real_pooled": -0.00040834759179499136,
+          "sim_pooled": 0.016804191042641428,
+          "sim_minus_real": 0.01721253863443642,
+          "paired_patient_bootstrap_bias_ci95": [
+            -0.0030979947987240007,
+            0.03988884532806812
+          ],
+          "real_patient_balanced": 0.002235696483106997,
+          "sim_patient_balanced": 0.02082932781684742,
+          "patients_with_both_arms": 37
+        },
+        "2": {
+          "real_pooled": -0.000877118246124145,
+          "sim_pooled": 0.016510481938183705,
+          "sim_minus_real": 0.01738760018430785,
+          "paired_patient_bootstrap_bias_ci95": [
+            -0.005439961005438673,
+            0.04137733842563331
+          ],
+          "real_patient_balanced": 0.0012120029252323625,
+          "sim_patient_balanced": 0.01146791312639449,
+          "patients_with_both_arms": 37
+        }
+      },
+      "bootstrap": {
+        "resamples": 2000,
+        "seed": 20261025,
+        "unit": "whole patient, paired real and simulated observations"
+      }
+    }
+  },
+  "source_sha256": {
+    "data/realism/heartsteps_emission_two_part.json": "373c75487a22c1ba21423514d81f4fe85468105478943832208abd880e77e33a",
+    "data/realism/heartsteps_emission_stateful_hint.json": "ce8ae84e6301727ee475d9d7a30837aa4cbae4307748a1bfd17631fe3a176e73"
+  },
+  "limit": "Selected post-anchor bounded-scale contrasts, not the full trial causal estimate."
+}

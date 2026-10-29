@@ -1,0 +1,517 @@
+{
+  "scope": "Aggregate local source-data audit; no API calls, no causal or LLM fitting.",
+  "source_url": "https://github.com/klasnja/HeartStepsV1",
+  "source_commit": "3016391de426116bdef41880d72bc8cd4b9b2477",
+  "source_sha256": {
+    "suggestions.csv": "60ee7896183d7084a084f9a6e8ef2d0afea2e7fecdb41d6b15382ce1745c5ddb",
+    "users.csv": "b07d93573b014e0ae1da822c616e9e811551ad77dc8390fb52a03202f7df0ed1",
+    "LICENSE": "f5b745ef98087f531e719ee8ca6a96809444573ecc7173c6fa68eaad39b3cc3f"
+  },
+  "audit_source_sha256": "3ea1ce327f9df06c617f679743db48251785dd7cb0de24dce8d4da42f37e3bb9",
+  "compact_sha256": "ce8ae84e6301727ee475d9d7a30837aa4cbae4307748a1bfd17631fe3a176e73",
+  "raw_rows": 8274,
+  "patients": 37,
+  "profile_rows": 37,
+  "duplicate_patient_decision_keys": 0,
+  "unavailable_excluded": 1684,
+  "available_missing_post_outcome_excluded": 423,
+  "available_by_action": {
+    "0": 2675,
+    "1": 2188,
+    "2": 1727
+  },
+  "available_missing_post_by_action": {
+    "0": 163,
+    "1": 135,
+    "2": 125
+  },
+  "eligible_patient_length_range": [
+    99,
+    241
+  ],
+  "excluded_first_35_per_patient_total": 1295,
+  "eligible_before_cap_and_anchor": {
+    "rows": 6167,
+    "actions": {
+      "0": 2512,
+      "1": 2053,
+      "2": 1602
+    },
+    "outcome_sources": {
+      "gfsteps30": 3784,
+      "jbsteps30": 2383
+    },
+    "randomization_draw_flags": {
+      "True": 3648,
+      "False": 2519
+    },
+    "strict_30m_missing": 0
+  },
+  "cap_checks": {
+    "210": {
+      "retained": {
+        "rows": 4831,
+        "actions": {
+          "0": 1977,
+          "1": 1622,
+          "2": 1232
+        },
+        "outcome_sources": {
+          "gfsteps30": 3019,
+          "jbsteps30": 1812
+        },
+        "randomization_draw_flags": {
+          "True": 2847,
+          "False": 1984
+        },
+        "strict_30m_missing": 0
+      },
+      "compact_reproduction": {
+        "exact_match": false,
+        "length_mismatched_patients": 3,
+        "value_or_action_mismatches": 0,
+        "compared_rows": 4306,
+        "matching_rule": "natural patient order, full action/outcome sequence"
+      },
+      "mixed_bounded_contrast": {
+        "mode": "mixed_bounded",
+        "patients": 37,
+        "arm_counts": [
+          1977,
+          1622,
+          1232
+        ],
+        "arm_means": [
+          0.10101028494351709,
+          0.10016481709823263,
+          0.10026082251082251
+        ],
+        "active_minus_none": {
+          "point": -0.0008454678452844561,
+          "patient_cluster_ci95": [
+            -0.013794018477605944,
+            0.012109680119429263
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -0.0007494624326945809,
+          "patient_cluster_ci95": [
+            -0.01758965903493074,
+            0.016793261248062494
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      },
+      "strict_30m_bounded_contrast": {
+        "mode": "strict_30m_bounded",
+        "patients": 37,
+        "arm_counts": [
+          1977,
+          1622,
+          1232
+        ],
+        "arm_means": [
+          0.10101028494351709,
+          0.10016481709823263,
+          0.10026082251082251
+        ],
+        "active_minus_none": {
+          "point": -0.0008454678452844561,
+          "patient_cluster_ci95": [
+            -0.013794018477605944,
+            0.012109680119429263
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -0.0007494624326945809,
+          "patient_cluster_ci95": [
+            -0.01758965903493074,
+            0.016793261248062494
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      },
+      "strict_30m_raw_contrast": {
+        "mode": "strict_30m_raw_steps",
+        "patients": 37,
+        "arm_counts": [
+          1977,
+          1622,
+          1232
+        ],
+        "arm_means": [
+          166.6722306525038,
+          155.96609124537608,
+          161.2694805194805
+        ],
+        "active_minus_none": {
+          "point": -10.706139407127722,
+          "patient_cluster_ci95": [
+            -35.413291717691436,
+            12.184311054297934
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -5.402750133023289,
+          "patient_cluster_ci95": [
+            -34.45127414820701,
+            23.387944464564203
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      }
+    },
+    "250": {
+      "retained": {
+        "rows": 4872,
+        "actions": {
+          "0": 1994,
+          "1": 1632,
+          "2": 1246
+        },
+        "outcome_sources": {
+          "gfsteps30": 3047,
+          "jbsteps30": 1825
+        },
+        "randomization_draw_flags": {
+          "True": 2871,
+          "False": 2001
+        },
+        "strict_30m_missing": 0
+      },
+      "compact_reproduction": {
+        "exact_match": true,
+        "length_mismatched_patients": 0,
+        "value_or_action_mismatches": 0,
+        "compared_rows": 4872,
+        "matching_rule": "natural patient order, full action/outcome sequence"
+      },
+      "mixed_bounded_contrast": {
+        "mode": "mixed_bounded",
+        "patients": 37,
+        "arm_counts": [
+          1994,
+          1632,
+          1246
+        ],
+        "arm_means": [
+          0.1007759946506185,
+          0.10036764705882353,
+          0.09989887640449438
+        ],
+        "active_minus_none": {
+          "point": -0.0004083475917949636,
+          "patient_cluster_ci95": [
+            -0.013604058574868525,
+            0.012668471964637353
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -0.0008771182461241173,
+          "patient_cluster_ci95": [
+            -0.01756402596600805,
+            0.016600078662826024
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      },
+      "strict_30m_bounded_contrast": {
+        "mode": "strict_30m_bounded",
+        "patients": 37,
+        "arm_counts": [
+          1994,
+          1632,
+          1246
+        ],
+        "arm_means": [
+          0.1007759946506185,
+          0.10036764705882353,
+          0.09989887640449438
+        ],
+        "active_minus_none": {
+          "point": -0.0004083475917949636,
+          "patient_cluster_ci95": [
+            -0.013604058574868525,
+            0.012668471964637353
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -0.0008771182461241173,
+          "patient_cluster_ci95": [
+            -0.01756402596600805,
+            0.016600078662826024
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      },
+      "strict_30m_raw_contrast": {
+        "mode": "strict_30m_raw_steps",
+        "patients": 37,
+        "arm_counts": [
+          1994,
+          1632,
+          1246
+        ],
+        "arm_means": [
+          166.1915747241725,
+          156.23529411764707,
+          160.6043338683788
+        ],
+        "active_minus_none": {
+          "point": -9.95628060652544,
+          "patient_cluster_ci95": [
+            -34.7565214253878,
+            13.36186651433683
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -5.587240855793709,
+          "patient_cluster_ci95": [
+            -34.40828451312031,
+            23.208881254921643
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      }
+    },
+    "uncapped": {
+      "retained": {
+        "rows": 4872,
+        "actions": {
+          "0": 1994,
+          "1": 1632,
+          "2": 1246
+        },
+        "outcome_sources": {
+          "gfsteps30": 3047,
+          "jbsteps30": 1825
+        },
+        "randomization_draw_flags": {
+          "True": 2871,
+          "False": 2001
+        },
+        "strict_30m_missing": 0
+      },
+      "compact_reproduction": {
+        "exact_match": true,
+        "length_mismatched_patients": 0,
+        "value_or_action_mismatches": 0,
+        "compared_rows": 4872,
+        "matching_rule": "natural patient order, full action/outcome sequence"
+      },
+      "mixed_bounded_contrast": {
+        "mode": "mixed_bounded",
+        "patients": 37,
+        "arm_counts": [
+          1994,
+          1632,
+          1246
+        ],
+        "arm_means": [
+          0.1007759946506185,
+          0.10036764705882353,
+          0.09989887640449438
+        ],
+        "active_minus_none": {
+          "point": -0.0004083475917949636,
+          "patient_cluster_ci95": [
+            -0.013604058574868525,
+            0.012668471964637353
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -0.0008771182461241173,
+          "patient_cluster_ci95": [
+            -0.01756402596600805,
+            0.016600078662826024
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      },
+      "strict_30m_bounded_contrast": {
+        "mode": "strict_30m_bounded",
+        "patients": 37,
+        "arm_counts": [
+          1994,
+          1632,
+          1246
+        ],
+        "arm_means": [
+          0.1007759946506185,
+          0.10036764705882353,
+          0.09989887640449438
+        ],
+        "active_minus_none": {
+          "point": -0.0004083475917949636,
+          "patient_cluster_ci95": [
+            -0.013604058574868525,
+            0.012668471964637353
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -0.0008771182461241173,
+          "patient_cluster_ci95": [
+            -0.01756402596600805,
+            0.016600078662826024
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      },
+      "strict_30m_raw_contrast": {
+        "mode": "strict_30m_raw_steps",
+        "patients": 37,
+        "arm_counts": [
+          1994,
+          1632,
+          1246
+        ],
+        "arm_means": [
+          166.1915747241725,
+          156.23529411764707,
+          160.6043338683788
+        ],
+        "active_minus_none": {
+          "point": -9.95628060652544,
+          "patient_cluster_ci95": [
+            -34.7565214253878,
+            13.36186651433683
+          ]
+        },
+        "sedentary_minus_none": {
+          "point": -5.587240855793709,
+          "patient_cluster_ci95": [
+            -34.40828451312031,
+            23.208881254921643
+          ]
+        },
+        "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+      }
+    }
+  },
+  "source_documentation": "https://github.com/klasnja/HeartStepsV1/wiki/Documentation-for-suggestions.csv",
+  "randomization_note": "is.randomized is the realized random send/no-send draw, not an eligibility flag. Do not filter to True when comparing against no message.",
+  "documented_action_probabilities": {
+    "none": 0.4,
+    "active": 0.3,
+    "sedentary": 0.3
+  },
+  "probability_note": "Probabilities come from source documentation, not explicit per-row propensity columns; verify trial-analysis assumptions before causal fitting.",
+  "full_available_sample_contrasts": [
+    {
+      "mode": "mixed_bounded",
+      "patients": 37,
+      "arm_counts": [
+        2512,
+        2053,
+        1602
+      ],
+      "arm_means": [
+        0.09984819532908704,
+        0.10828803377171616,
+        0.109755722014149
+      ],
+      "active_minus_none": {
+        "point": 0.008439838442629119,
+        "patient_cluster_ci95": [
+          -0.0036426783655229508,
+          0.02141837854438178
+        ]
+      },
+      "sedentary_minus_none": {
+        "point": 0.009907526685061965,
+        "patient_cluster_ci95": [
+          -0.005787138286096078,
+          0.025592882237336644
+        ]
+      },
+      "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+    },
+    {
+      "mode": "strict_30m_bounded",
+      "patients": 37,
+      "arm_counts": [
+        2512,
+        2053,
+        1602
+      ],
+      "arm_means": [
+        0.09984819532908704,
+        0.10828803377171616,
+        0.109755722014149
+      ],
+      "active_minus_none": {
+        "point": 0.008439838442629119,
+        "patient_cluster_ci95": [
+          -0.0036426783655229508,
+          0.02141837854438178
+        ]
+      },
+      "sedentary_minus_none": {
+        "point": 0.009907526685061965,
+        "patient_cluster_ci95": [
+          -0.005787138286096078,
+          0.025592882237336644
+        ]
+      },
+      "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+    },
+    {
+      "mode": "strict_30m_raw_steps",
+      "patients": 37,
+      "arm_counts": [
+        2512,
+        2053,
+        1602
+      ],
+      "arm_means": [
+        163.093949044586,
+        170.38723818801753,
+        175.29775280898878
+      ],
+      "active_minus_none": {
+        "point": 7.293289143431537,
+        "patient_cluster_ci95": [
+          -14.1219537239636,
+          29.48154310460822
+        ]
+      },
+      "sedentary_minus_none": {
+        "point": 12.203803764402778,
+        "patient_cluster_ci95": [
+          -14.610886818734302,
+          37.46110161660851
+        ]
+      },
+      "interpretation": "Unadjusted retained-observation diagnostic, not a causal MRT estimator."
+    }
+  ],
+  "next_raw_decision_feasibility": {
+    "pairs_with_valid_times": 6558,
+    "pairs_missing_times": 0,
+    "next_30m_outcome_missing": 420,
+    "next_decision_unavailable": 1141,
+    "elapsed_minutes_quantiles": [
+      -269.76666666666665,
+      134.67083333333332,
+      180.4,
+      273.8625,
+      1917.0166666666667
+    ],
+    "negative_elapsed_intervals": 4,
+    "zero_elapsed_intervals": 0,
+    "note": "Pairs follow original decision index, not the next retained available row. Non-monotonic naive timestamps require time-zone/source reconciliation before defining lag windows. Do not condition naively on future availability."
+  },
+  "subgroup_feasibility": {
+    "profile_linkage": "Raw participant IDs available locally; no IDs exported here.",
+    "age_nonmissing": 37,
+    "age_range": [
+      19.0,
+      64.0
+    ],
+    "gender_category_counts": {
+      "female": 24,
+      "male": 13
+    },
+    "validation_status": "Feasibility only, not independent subgroup or delayed-effect validation."
+  }
+}
