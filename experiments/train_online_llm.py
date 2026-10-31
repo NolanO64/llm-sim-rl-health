@@ -34,12 +34,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.llm_client import build_client
 from src.llm_world import ACTIONS, EPISODE_LENGTH, emit_outcome, llm_day_step, make_emitter, persona
 from src.paths import ONLINE_Q_DIR
+from src.synthetic_q import EPISODES_PER_ROUND, GAMMA, Q_ALPHA, Q_REFIT_PASSES, refit_q
 
-GAMMA = 0.9
-EPISODES_PER_ROUND = 40
 WORKERS = 4  # concurrent patients; stays under the gateway's request limit
-Q_REFIT_PASSES = 60
-Q_ALPHA = 0.1
 
 
 def collect_episode(client, Q, eps, seed, model, backend, temperature, max_tokens):
@@ -79,20 +76,6 @@ def collect_episode(client, Q, eps, seed, model, backend, temperature, max_token
         else:
             transitions.append((c, b, a, r, 0, 0, True))
     return transitions
-
-
-def refit_q(buffer, passes=Q_REFIT_PASSES, alpha=Q_ALPHA):
-    """Refit the Q-table from scratch on the whole buffer (growing-batch)."""
-    Q = np.zeros((2, 4, 4))
-    rng = np.random.default_rng(0)
-    order = list(range(len(buffer)))
-    for _ in range(passes):
-        rng.shuffle(order)
-        for j in order:
-            c, b, a, r, next_c, next_b, done = buffer[j]
-            target = r if done else r + GAMMA * Q[next_c, next_b].max()
-            Q[c, b, a] += alpha * (target - Q[c, b, a])
-    return Q
 
 
 def _serializable_buffer(buffer):

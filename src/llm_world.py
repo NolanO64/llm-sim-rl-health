@@ -25,6 +25,7 @@ import numpy as np
 
 from .llm_client import chat, reasoning_extra_body
 from .paths import REPO_ROOT
+from .synthetic_patient import sample_patient
 
 # The emission layer is shared with the HeartSteps realism testbed; import the one
 # canonical implementation from the vendored simulator package rather than copying it.
@@ -39,12 +40,6 @@ ACTIONS = ["none", "generic", "match_A", "match_B"]
 EPISODE_LENGTH = 40
 
 MODEL = "SURF.Qwen3.5 122B A10B NVFP4"
-
-_BASELINE = ["very sedentary", "low-activity", "moderately active", "quite active", "very active"]
-_REACTIVITY = ["barely reacts to app prompts", "somewhat reacts to prompts",
-               "reacts to prompts", "reacts strongly to prompts"]
-_HABITUATION = ["tunes out repeated messages very slowly", "tunes out slowly",
-                "average tolerance", "tunes out quickly"]
 
 GENERATION_SYSTEM = (
     "You simulate, ONE DAY AT A TIME, how a specific person responds to a physical-activity "
@@ -74,12 +69,7 @@ SCORING_SYSTEM = (
 
 def persona(rng):
     """Sample a templated patient description (age and three behaviour traits)."""
-    return ("age %d; baseline %s; %s; %s" % (
-        int(rng.integers(20, 80)),
-        _BASELINE[rng.integers(len(_BASELINE))],
-        _REACTIVITY[rng.integers(len(_REACTIVITY))],
-        _HABITUATION[rng.integers(len(_HABITUATION))],
-    ))
+    return sample_patient(rng).description
 
 
 def make_emitter():

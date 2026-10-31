@@ -22,3 +22,12 @@ data/online_q/full_launch_debug.*
 data/results/reference_ladder_new.json
 data/results/benchmark_sigma_sweep_new.json
 data/**/*.failures.json
+
+# Restored compressed evidence and local verification outputs.
+.test-temp/
+data/results/ranking_reference_uncertainty.json
+data/results/ranking_reference_uncertainty_32seeds.json
+data/results/reference_dynamics_sweep_w4.json
+data/online_q/online_qtables_openai_gpt5mini_minimal_seed0_full8000.json
+data/online_q/online_qtables_openai_gpt5mini_minimal_seeds1_2_full8000.json
+data/results/*_reproduced.json

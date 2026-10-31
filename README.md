@@ -171,3 +171,14 @@ neutralized offline Q = `657 +/- 233`. Thus fully breaking action assignment
 hurts transfer, while preserving the message/no-message distinction but removing
 context-matching semantics leaves the high-variance offline result largely
 unchanged.
+
+## Additional validation experiments and reanalyses
+
+The [follow-up evidence guide](docs/followup_evidence.md) separates seven checks:
+the action-conditioned statistical comparator, reference-ranking uncertainty,
+reference-dynamics sensitivity, trajectory mean-alignment sensitivity, scoring
+batch/policy-family robustness, HeartSteps source/effect auditing, and corrected
+direct-training summaries. Each has a runnable script, results note and saved
+aggregate or synthetic evidence. No new API calls are needed for these checks.
+Large synthetic evaluation artifacts are compressed; restore their exact bytes
+with `python experiments/restore_evidence.py` before inspecting historical data.

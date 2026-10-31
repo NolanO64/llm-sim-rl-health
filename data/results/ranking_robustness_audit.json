@@ -1,0 +1,250 @@
+{
+  "scope": "Saved rounded reference returns and simulator batch means; no new rollouts or policy fitting.",
+  "source_sha256": {
+    "data/results/benchmark_robust.json": "0dadf911ae20ef01d6ce524a7d015f55fb52dcd12f7dd5445d08722838361d77",
+    "data/results/benchmark_sigma_sweep.json": "c729dcbb6512e6e6aea0185525a2521acc3cb76033e596131e426cd773adce5d"
+  },
+  "pooled": {
+    "n": 49,
+    "rho": 0.6605270544765249,
+    "selected": "tabQ c0 s1",
+    "selected_reference_return": 907.0,
+    "best_reference_return": 1109.0,
+    "regret": 202.0,
+    "relative_regret_percent": 18.214607754733994,
+    "top_k": 5,
+    "top_k_overlap_count": 1,
+    "reference_best_simulator_rank": 24
+  },
+  "per_batch": [
+    {
+      "n": 49,
+      "rho": 0.5604224599389889,
+      "selected": "tabQ c0 s1",
+      "selected_reference_return": 907.0,
+      "best_reference_return": 1109.0,
+      "regret": 202.0,
+      "relative_regret_percent": 18.214607754733994,
+      "top_k": 5,
+      "top_k_overlap_count": 1,
+      "reference_best_simulator_rank": 39
+    },
+    {
+      "n": 49,
+      "rho": 0.579045383999234,
+      "selected": "online-eps0.8 s1",
+      "selected_reference_return": 960.0,
+      "best_reference_return": 1109.0,
+      "regret": 149.0,
+      "relative_regret_percent": 13.435527502254283,
+      "top_k": 5,
+      "top_k_overlap_count": 2,
+      "reference_best_simulator_rank": 17
+    },
+    {
+      "n": 49,
+      "rho": 0.6375325271697536,
+      "selected": "tabQ c1 s1",
+      "selected_reference_return": 913.0,
+      "best_reference_return": 1109.0,
+      "regret": 196.0,
+      "relative_regret_percent": 17.673579801623085,
+      "top_k": 5,
+      "top_k_overlap_count": 1,
+      "reference_best_simulator_rank": 12
+    }
+  ],
+  "within_family": {
+    "baseline": {
+      "n": 3,
+      "rho": 0.5,
+      "selected": "random-msg",
+      "selected_reference_return": 496.0,
+      "best_reference_return": 575.0,
+      "regret": 79.0,
+      "relative_regret_percent": 13.73913043478261,
+      "top_k": 3,
+      "top_k_overlap_count": 3,
+      "reference_best_simulator_rank": 2
+    },
+    "fixed_message": {
+      "n": 9,
+      "rho": 0.06666666666666667,
+      "selected": "mA-mix0.6",
+      "selected_reference_return": 594.0,
+      "best_reference_return": 761.0,
+      "regret": 167.0,
+      "relative_regret_percent": 21.944809461235216,
+      "top_k": 5,
+      "top_k_overlap_count": 3,
+      "reference_best_simulator_rank": 8
+    },
+    "heuristic": {
+      "n": 10,
+      "rho": 0.28484848484848485,
+      "selected": "heur-mix0.80",
+      "selected_reference_return": 787.0,
+      "best_reference_return": 833.0,
+      "regret": 46.0,
+      "relative_regret_percent": 5.5222088835534215,
+      "top_k": 5,
+      "top_k_overlap_count": 2,
+      "reference_best_simulator_rank": 3
+    },
+    "offline_rl": {
+      "n": 12,
+      "rho": 0.7552447552447553,
+      "selected": "tabQ c0 s1",
+      "selected_reference_return": 907.0,
+      "best_reference_return": 913.0,
+      "regret": 6.0,
+      "relative_regret_percent": 0.6571741511500547,
+      "top_k": 5,
+      "top_k_overlap_count": 4,
+      "reference_best_simulator_rank": 2
+    },
+    "online_rl": {
+      "n": 3,
+      "rho": -1.0,
+      "selected": "online-tabQ s2",
+      "selected_reference_return": 942.0,
+      "best_reference_return": 1109.0,
+      "regret": 167.0,
+      "relative_regret_percent": 15.058611361587015,
+      "top_k": 3,
+      "top_k_overlap_count": 3,
+      "reference_best_simulator_rank": 3
+    },
+    "online_rl_blends": {
+      "n": 12,
+      "rho": 0.4055944055944056,
+      "selected": "online-eps0.8 s1",
+      "selected_reference_return": 960.0,
+      "best_reference_return": 1093.0,
+      "regret": 133.0,
+      "relative_regret_percent": 12.168344007319305,
+      "top_k": 5,
+      "top_k_overlap_count": 2,
+      "reference_best_simulator_rank": 6
+    }
+  },
+  "leave_one_family_out": {
+    "baseline": {
+      "n": 46,
+      "rho": 0.6551341350601295,
+      "selected": "tabQ c0 s1",
+      "selected_reference_return": 907.0,
+      "best_reference_return": 1109.0,
+      "regret": 202.0,
+      "relative_regret_percent": 18.214607754733994,
+      "top_k": 5,
+      "top_k_overlap_count": 1,
+      "reference_best_simulator_rank": 23
+    },
+    "fixed_message": {
+      "n": 40,
+      "rho": 0.5335147057794765,
+      "selected": "tabQ c0 s1",
+      "selected_reference_return": 907.0,
+      "best_reference_return": 1109.0,
+      "regret": 202.0,
+      "relative_regret_percent": 18.214607754733994,
+      "top_k": 5,
+      "top_k_overlap_count": 1,
+      "reference_best_simulator_rank": 24
+    },
+    "heuristic": {
+      "n": 39,
+      "rho": 0.6826256398235635,
+      "selected": "tabQ c0 s1",
+      "selected_reference_return": 907.0,
+      "best_reference_return": 1109.0,
+      "regret": 202.0,
+      "relative_regret_percent": 18.214607754733994,
+      "top_k": 5,
+      "top_k_overlap_count": 2,
+      "reference_best_simulator_rank": 18
+    },
+    "offline_rl": {
+      "n": 37,
+      "rho": 0.6230440967283072,
+      "selected": "online-tabQ s2",
+      "selected_reference_return": 942.0,
+      "best_reference_return": 1109.0,
+      "regret": 167.0,
+      "relative_regret_percent": 15.058611361587015,
+      "top_k": 5,
+      "top_k_overlap_count": 1,
+      "reference_best_simulator_rank": 16
+    },
+    "online_rl": {
+      "n": 46,
+      "rho": 0.6475068614506602,
+      "selected": "tabQ c0 s1",
+      "selected_reference_return": 907.0,
+      "best_reference_return": 1093.0,
+      "regret": 186.0,
+      "relative_regret_percent": 17.017383348581884,
+      "top_k": 5,
+      "top_k_overlap_count": 1,
+      "reference_best_simulator_rank": 20
+    },
+    "online_rl_blends": {
+      "n": 37,
+      "rho": 0.7634402242087496,
+      "selected": "tabQ c0 s1",
+      "selected_reference_return": 907.0,
+      "best_reference_return": 1109.0,
+      "regret": 202.0,
+      "relative_regret_percent": 18.214607754733994,
+      "top_k": 5,
+      "top_k_overlap_count": 3,
+      "reference_best_simulator_rank": 18
+    }
+  },
+  "exploratory_batch_resampling": {
+    "ordered_resamples": 27,
+    "regret_range": [
+      120.0,
+      202.0
+    ],
+    "top5_overlap_range": [
+      1,
+      2
+    ],
+    "limit": "Three batch means only; these ranges are not reliable 95% intervals."
+  },
+  "saved_context_noise_summary": [
+    {
+      "sigma": 0.4,
+      "rho": 0.729,
+      "best_llm_rank": 8,
+      "top_third": 0.326
+    },
+    {
+      "sigma": 0.8,
+      "rho": 0.702,
+      "best_llm_rank": 3,
+      "top_third": 0.432
+    },
+    {
+      "sigma": 1.2,
+      "rho": 0.674,
+      "best_llm_rank": 24,
+      "top_third": 0.174
+    },
+    {
+      "sigma": 1.6,
+      "rho": 0.665,
+      "best_llm_rank": 24,
+      "top_third": 0.235
+    },
+    {
+      "sigma": 2.0,
+      "rho": 0.661,
+      "best_llm_rank": 24,
+      "top_third": -0.026
+    }
+  ],
+  "limits": "Related families are not independent algorithms. Reference values held fixed; no joint LLM/reference uncertainty."
+}

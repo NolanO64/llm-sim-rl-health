@@ -1,0 +1,47 @@
+{
+  "scope": "Saved-run reporting audit only; no new policy training or reference/LLM calls.",
+  "direct_observable_training": {
+    "values": [
+      1002.0,
+      1027.0,
+      1067.0,
+      1080.0,
+      917.0,
+      939.0
+    ],
+    "n": 6,
+    "mean": 1005.3333333333334,
+    "population_sd": 60.63735555652876,
+    "sample_sd": 66.42489493154406,
+    "maximum": 1080.0
+  },
+  "qwen_saved_rounded_summary": {
+    "mean": 1013,
+    "population_sd": 70
+  },
+  "old_mean_to_best_ratio": 0.937962962962963,
+  "mean_to_mean_ratio_descriptive_only": 1.0076259946949602,
+  "gpt5mini": {
+    "values": [
+      825.193,
+      750.667,
+      365.477
+    ],
+    "n": 3,
+    "mean": 647.1123333333334,
+    "population_sd": 201.45698780853667,
+    "sample_sd": 246.73341262450316,
+    "maximum": 825.193
+  },
+  "source_sha256": {
+    "data/results/reference_ladder.json": "f6a91ae4c2e40f7bb40c1e0314e951b0b64921a3308aa8825d334051303688ba",
+    "data/online_q/online_qtables_openai_gpt5mini_minimal_seed0_full8000.json": "16e6af1bcc52db4bb253cfb498d621bdb15d62c9689ebe2caf8f47cdbf58d9b0",
+    "data/online_q/online_qtables_openai_gpt5mini_minimal_seeds1_2_full8000.json": "d22024d83ea19840e4ebcd886c78c42b0d4fc670c596b8bf3a8f00a567a87681"
+  },
+  "limits": [
+    "Direct-training returns are saved rounded estimates; historical seed identities are absent.",
+    "Direct training uses 25000 episodes and different updates; simulator training targets 8000 transitions.",
+    "No matched-budget superiority, equivalence or proven-ceiling claim follows.",
+    "Population SD is reported consistently; it is not a confidence interval."
+  ]
+}
